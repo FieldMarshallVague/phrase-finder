@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Item, PerfectItService } from './services/perfect-it.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,21 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'tech-test';
+  items: Array<Item>;
+
+  constructor(private apiService: PerfectItService) {}
+  ngOnInit() {
+    this.fetchData();
+  }
+  fetchData() {
+    this.apiService.fetch().subscribe(
+      (data: Array<Item>) => {
+         console.log(data);
+         this.items = data;
+      }, (err) => {
+        console.log(err);
+      }
+    );
+  }
+
 }
