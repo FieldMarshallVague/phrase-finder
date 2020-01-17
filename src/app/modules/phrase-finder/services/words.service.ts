@@ -5,6 +5,9 @@ import { Injectable } from '@angular/core';
 })
 export class WordsService {
 
+  totalWords: number;
+
+
   constructor() { }
 
   /**
@@ -17,7 +20,7 @@ export class WordsService {
     const words = text.split(" ");
     const r = /^[a-zA-Z0-9\s\?\(\)\[\]\,\.\;\:'!"]+$/;
     let i = words.length;
-    let totalWords = words.length;
+    this.totalWords = words.length;
     let nonEnglishCount = 0;
 
     while (--i) {
@@ -27,7 +30,7 @@ export class WordsService {
     }
 
     // say 20%? for names, references, links etc.
-    if (nonEnglishCount > (totalWords * 0.2)) return false;
+    if (nonEnglishCount > (this.totalWords * 0.2)) return false;
 
     return true;
   }

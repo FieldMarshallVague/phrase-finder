@@ -10,10 +10,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatToolbarModule, MatCardModule, MatButtonModule } from  '@angular/material';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { HomeComponent } from './modules/general/home/home.component';
+import { NotFoundComponent } from './modules/general/not-found/not-found.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,

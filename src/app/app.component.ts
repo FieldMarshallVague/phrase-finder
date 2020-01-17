@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Item, PerfectItService } from './services/perfect-it.service';
+import { Item, PerfectItService } from './modules/phrase-finder/services/perfect-it.service';
 
 @Component({
   selector: 'app-root',
@@ -8,12 +8,14 @@ import { Item, PerfectItService } from './services/perfect-it.service';
 })
 export class AppComponent {
   title = 'tech-test';
-  items: Array<Item>;
+  items: Array<Item> = [];
 
   constructor(private apiService: PerfectItService) {}
+
   ngOnInit() {
-    this.fetchData();
+    // this.fetchData();
   }
+
   fetchData() {
     this.apiService.fetch().subscribe(
       (data: Array<Item>) => {
