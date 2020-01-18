@@ -9,6 +9,7 @@ import { PerfectItService } from '../services/perfect-it.service';
 export class PhraseFinderComponent implements OnInit {
 
   file: any;
+  base64Text: string;
 
   constructor(
     private apiService: PerfectItService,
@@ -17,26 +18,12 @@ export class PhraseFinderComponent implements OnInit {
   ngOnInit() {
   }
 
-  readFile(e) {
-    this.file = e.target.files[0];  // handle multi-select inputs
+  async readFile(e) {
+    this.file = e.target.files[0];  // because it supports multi-select inputs
 
-    // Example call:
-    this.apiService.convertFileToBase64(this.file).then(result => {
-      console.log(result);
-    });
+    this.base64Text = await this.apiService.convertFileToBase64(this.file) as string; // needs real error handling
 
-    // let reader = new FileReader();
-
-    // reader.readAsText(file);
-
-    // reader.onload = () => {
-    //   console.log(reader.result);
-    //   this.apiService.convertFileToBase64(reader.result);
-    // };
-
-    // reader.onerror = function() {
-    //   console.log(reader.error);
-    // };
+    console.log(this.base64Text);
 
   }
 

@@ -3,4 +3,7 @@
 <label labelFor="inputFile">Select a file to upload:</label>
 <input type="file" (change)="readFile($event)" id="inputFile">
 
+<h3>Selected File: </h3>
+<span>{{file?.name}}</span>
+
 
