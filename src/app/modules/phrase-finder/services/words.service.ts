@@ -5,6 +5,8 @@ import { Injectable } from '@angular/core';
 })
 export class WordsService {
 
+  // say 20%? for names, references, links etc.
+  illegalCharacterTolerance = 0.2;
   totalWords: number;
 
 
@@ -29,8 +31,7 @@ export class WordsService {
       }
     }
 
-    // say 20%? for names, references, links etc.
-    if (nonEnglishCount > (this.totalWords * 0.2)) return false;
+    if (nonEnglishCount > (this.totalWords * this.illegalCharacterTolerance)) return false;
 
     return true;
   }
