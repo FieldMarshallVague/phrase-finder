@@ -6,14 +6,6 @@ import { DraftModel } from '../models/draft';
 import { DraftTextModel } from '../models/draft-text';
 import { DraftWordsModel } from '../models/draft-words';
 
-export interface Item {
-  name: string;
-  description: string;
-  url: string;
-  html: string;
-  markdown: string;
-}
-
 @Injectable({
   providedIn: 'root'
 })

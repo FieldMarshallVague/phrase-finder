@@ -1,4 +1,4 @@
 export interface DraftModel {
-  Id: number;
-  WordCount: number;
+  id: number;
+  wordCount: number;
 }

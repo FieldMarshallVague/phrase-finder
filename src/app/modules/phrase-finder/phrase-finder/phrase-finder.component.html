@@ -6,10 +6,48 @@
 <div *ngIf="file">
   <h3>Selected File: </h3>
   <p>{{file?.name}}</p>
-  <button (click)="analyseText(base64Text)">Analyse Text</button>
+
+  <mat-card>
+    <a mat-stroked-button (click)="analyseText(base64Text)">Upload Doc for Analysis</a>
+  </mat-card>
+
+  <!-- <mat-card>
+    <a mat-raised-button (click)="getDraft(draftModel?.id)">Get Existing Draft</a>
+  </mat-card> -->
 </div>
 
 
 <div *ngIf="draftModel">
-  <button (click)="getDraft(draftModel?.id)">Get Draft</button>
+  <mat-card>
+    <a mat-stroked-button (click)="checkIsEnglish()">Check Is English</a>
+    <p *ngIf="draftText">Is it in english? {{englishCheck.isEnglish ? 'Yes' : 'No'}}</p>
+    <p *ngIf="draftText && !englishCheck?.isEnglish">
+      There were {{englishCheck.nonEnglishWordCount}} non-English words
+      ({{englishCheck.foreignWordPc | number: '1.2-2' }}%)
+    </p>
+  </mat-card>
+
+</div>
+
+<div *ngIf="englishCheck?.isEnglish">
+  <mat-card>
+    <div *ngIf="draftModel?.wordCount > 500; else wordCountError">
+      There are {{draftModel.wordCount}} words.
+    </div>
+    <ng-template #wordCountError>
+      <div class="error">There are too few words! (minimum: 500)</div>
+    </ng-template>
+  </mat-card>
+</div>
+
+
+<div *ngIf="englishCheck?.isEnglish && draftModel?.wordCount > 500">
+  <mat-card>
+    <a mat-stroked-button (click)="getRecurringPhrases()">Find Phrases</a>
+    <ul *ngIf="phrases">
+      <li *ngFor="let phrase of phrases">
+        {{phrase.id}}: {{phrase.phrase}} ({{phrase.count}})
+      </li>
+    </ul>
+  </mat-card>
 </div>

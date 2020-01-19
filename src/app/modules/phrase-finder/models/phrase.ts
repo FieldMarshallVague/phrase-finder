@@ -1,5 +1,5 @@
 export interface Phrase {
-  Id: number;
-  Phrase: string;
-  Count: number;
+  id: number;
+  phrase: string;
+  count: number;
 }

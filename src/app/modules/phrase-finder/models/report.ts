@@ -1,7 +1,7 @@
 import { Phrase } from './phrase';
 
 export interface Report {
-  IsEnglish: boolean;
-  WordCount: number;
-  Phrases: Array<Phrase>;
+  isEnglish: boolean;
+  wordCount: number;
+  phrases: Array<Phrase>;
 }

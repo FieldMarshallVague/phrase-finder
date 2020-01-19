@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { MatToolbarModule, MatCardModule, MatButtonModule } from  '@angular/material';
+
 import { PhraseFinderRoutingModule } from './phrase-finder-routing.module';
 import { PhraseFinderComponent } from './phrase-finder/phrase-finder.component';
 
@@ -9,7 +11,10 @@ import { PhraseFinderComponent } from './phrase-finder/phrase-finder.component';
   declarations: [PhraseFinderComponent],
   imports: [
     CommonModule,
-    PhraseFinderRoutingModule
+    PhraseFinderRoutingModule,
+    MatToolbarModule,
+    MatCardModule,
+    MatButtonModule,
   ]
 })
 export class PhraseFinderModule { }

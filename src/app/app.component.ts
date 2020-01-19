@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Item, PerfectItService } from './modules/phrase-finder/services/perfect-it.service';
+import { PerfectItService } from './modules/phrase-finder/services/perfect-it.service';
 
 @Component({
   selector: 'app-root',

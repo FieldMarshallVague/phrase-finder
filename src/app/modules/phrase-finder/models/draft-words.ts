@@ -1,4 +1,4 @@
 export interface DraftWordsModel {
-  Id: number;
-  Words: Array<string>;
+  id: number;
+  words: Array<string>;
 }

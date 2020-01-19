@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Phrase } from '../models/phrase';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,7 @@ import { Phrase } from '../models/phrase';
 export class WordsService {
 
   // say 20%? for names, references, links etc.
-  illegalCharacterTolerance = 0.2;
+  foreignWordTolerancePc = 20;
   totalWords: number;
 
 
@@ -21,27 +22,46 @@ export class WordsService {
   checkEnglish(text: string) {
 
     const words = text.split(" ");
-    const r = /^[a-zA-Z0-9\s\?\(\)\[\]\,\.\;\:'!"]+$/;
+    // const r = /^[a-zA-Z0-9\s\?\(\)\[\]\,\.\;\:'!"]+[ \.,;:()?!]?$/;
+    const r = /[a-zA-Z0-9-]+[ \.,;:()"'?!]?/;
     let i = words.length;
     this.totalWords = words.length;
-    let nonEnglishCount = 0;
+
+
+    let output = {
+      isEnglish: true,
+      nonEnglishWordCount: 0,
+      foreignWordPc: 0
+    }
 
     while (--i) {
-      if (r.test(words[i])) {
-        nonEnglishCount++;
+      let wordToTest = words[i].trim();
+      if (wordToTest && !r.test(wordToTest)) {
+        console.log(`non english word: '${words[i]}'`);
+        output.nonEnglishWordCount++;
       }
     }
 
-    if (nonEnglishCount > (this.totalWords * this.illegalCharacterTolerance)) return false;
+    console.log(`non english words count: ${output.nonEnglishWordCount}`);
 
-    return true;
+    output.foreignWordPc = output.nonEnglishWordCount / this.totalWords * 100;
+
+    if (output.foreignWordPc > this.foreignWordTolerancePc) {
+      output.isEnglish = false;
+    }
+
+    return output;
   }
 
-  getRecurringPhrases(text: string): Array<Phrase> {
+  getRecurringPhrases(text: string): Observable<Array<Phrase>> {
 
-    let phrases = this.getPhrases(text);
+    return new Observable((observer) => {
 
-    return this.getPhraseMatches(phrases, text);
+      let phrases = this.getPhrases(text);
+      observer.next(this.getPhraseMatches(phrases, text));
+
+      observer.complete();
+    });
   }
 
   private getPhrases(text: string): Set<string> {
@@ -52,8 +72,6 @@ export class WordsService {
 
     // split text on punctuation
     const sentences = text.replace(/([.?!])\s*(?=[A-Z0-9])/g, "$1|").split("|");
-
-    // console.log(`sentences: ${sentences}`);
 
     // find matches based on some letters (or letter-number combos, like 'a11y') followed by some punctuation
     let regx = /([A-Za-z0-9]+[ \.,;:()?!]+){4,4}/g;
@@ -86,24 +104,28 @@ export class WordsService {
 
   }
 
-  private getPhraseMatches(phrases: Set<string>, text: string): Array<Phrase>{
+  private getPhraseMatches(phrases: Set<string>, text: string): Array<Phrase> {
 
     let counter = 0;
     let results = new Array<Phrase>();
 
     // find number of occurrences of each 4-word phrase
     for (let phrase of phrases) {
+      // sanitise the phrase (against regex keywords)
+      phrase = phrase.replace(/([.*+?^$|(){}\[\]])/mg, "\\$1");
+
       let regx = new RegExp(`${phrase}`, 'g');
       let matches = text.match(regx);
       // console.log(matches);
       if (matches) {
         let output: Phrase = {
-          Id: counter++,
-          Phrase: phrase,
-          Count: matches.length
+          id: counter++,
+          phrase: phrase,
+          count: matches.length
         }
 
-        results.push(output);
+        if (output.count > 1)
+          results.push(output);
       }
     }
 
