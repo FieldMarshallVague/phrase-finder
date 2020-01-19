@@ -1,9 +1,15 @@
-<p>phrase-finder works!</p>
+<h2>Let's find some phrases!</h2>
 
 <label labelFor="inputFile">Select a file to upload:</label>
 <input type="file" (change)="readFile($event)" id="inputFile">
 
-<h3>Selected File: </h3>
-<span>{{file?.name}}</span>
+<div *ngIf="file">
+  <h3>Selected File: </h3>
+  <p>{{file?.name}}</p>
+  <button (click)="analyseText(base64Text)">Analyse Text</button>
+</div>
 
 
+<div *ngIf="draftModel">
+  <button (click)="getDraft(draftModel?.id)">Get Draft</button>
+</div>
