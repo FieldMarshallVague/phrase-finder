@@ -71,8 +71,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "tech-test:build",
-            "port": 80
+            "browserTarget": "tech-test:build"
           },
           "configurations": {
             "production": {
